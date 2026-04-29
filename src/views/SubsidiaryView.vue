@@ -187,7 +187,6 @@ function visitOther(id) {
 }
 .sub-back:hover { color: var(--gold); gap: 1.1rem; }
 .sub-back::before { content: '←'; font-size: 0.85rem; }
-.focus-list { }
 .focus-item {
   display: flex; align-items: flex-start; gap: 1.2rem;
   padding: 1.2rem 0;
