@@ -1,0 +1,1 @@
+# TODO - Fix Vite Dev Server\n\n- [x] Step 1: Clean node_modules and package-lock.json\n- [x] Step 2: Update package.json to stable Vite ^5.4.1 and @vitejs/plugin-vue ^5.1.4 (JSON fixed)\n- [x] Step 3: Run npm install (success: 33 packages)\n- [x] Step 4: Test npm run dev (success: Vite running on http://localhost:5173/)
