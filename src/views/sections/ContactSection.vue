@@ -10,7 +10,7 @@
 
       <div class="contact-actions">
         <button class="btn-primary" @click="$emit('open-modal')">Send an Enquiry</button>
-        <a class="btn-ghost" href="tel:+233000000000">Call Us</a>
+        <a class="btn-ghost" href="tel:+233592763541">Call Us</a>
       </div>
 
       <div class="contact-details">
