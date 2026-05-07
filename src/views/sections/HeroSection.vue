@@ -1,5 +1,8 @@
 <template>
   <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="https://res.cloudinary.com/degd6ahfu/video/upload/v1778117184/ESP_NIght_Shot_oymgfc.mp4" type="video/mp4">
+    </video>
     <div class="hero-grid" />
     <div class="hero-radial" />
     <div class="hero-corner tl" />
@@ -53,6 +56,7 @@ const goSubsidiaries = () => scrollTo('subsidiaries')
     linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
   background-size: 60px 60px;
+  z-index: 1;
 }
 .hero-radial {
   position: absolute; top: 50%; left: 50%;
@@ -60,8 +64,19 @@ const goSubsidiaries = () => scrollTo('subsidiaries')
   width: 800px; height: 800px;
   background: radial-gradient(ellipse, rgba(201,168,76,0.06) 0%, transparent 70%);
   pointer-events: none;
+  z-index: 1;
 }
-.hero-corner { position: absolute; width: 100px; height: 100px; pointer-events: none; }
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(20px 20px 20px black) invert(15%);
+}
+.hero-corner { position: absolute; width: 100px; height: 100px; pointer-events: none; z-index: 1; }
 .hero-corner.tl { top: 7rem; left: 4rem; border-top: 0.5px solid rgba(201,168,76,0.3); border-left: 0.5px solid rgba(201,168,76,0.3); }
 .hero-corner.tr { top: 7rem; right: 4rem; border-top: 0.5px solid rgba(201,168,76,0.3); border-right: 0.5px solid rgba(201,168,76,0.3); }
 .hero-corner.bl { bottom: 4rem; left: 4rem; border-bottom: 0.5px solid rgba(201,168,76,0.3); border-left: 0.5px solid rgba(201,168,76,0.3); }
@@ -90,6 +105,7 @@ const goSubsidiaries = () => scrollTo('subsidiaries')
   display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
   color: rgba(201,168,76,0.5); font-size: 0.52rem; letter-spacing: 0.3em;
   text-transform: uppercase; animation: scrollPulse 2s ease-in-out infinite; cursor: pointer;
+  z-index: 2;
 }
 .hero-scroll-line { width: 0.5px; height: 40px; background: linear-gradient(to bottom, rgba(201,168,76,0.5), transparent); }
 
