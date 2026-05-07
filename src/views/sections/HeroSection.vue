@@ -74,7 +74,6 @@ const goSubsidiaries = () => scrollTo('subsidiaries')
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
-  filter: drop-shadow(20px 20px 20px black) invert(15%);
 }
 .hero-corner { position: absolute; width: 100px; height: 100px; pointer-events: none; z-index: 1; }
 .hero-corner.tl { top: 7rem; left: 4rem; border-top: 0.5px solid rgba(201,168,76,0.3); border-left: 0.5px solid rgba(201,168,76,0.3); }
@@ -83,8 +82,12 @@ const goSubsidiaries = () => scrollTo('subsidiaries')
 .hero-corner.br { bottom: 4rem; right: 4rem; border-bottom: 0.5px solid rgba(201,168,76,0.3); border-right: 0.5px solid rgba(201,168,76,0.3); }
 
 .hero-content {
-  text-align: center; z-index: 2; padding: 2rem;
+  width: 100vw;
+  height: 100vh;
   animation: fadeUp 1.1s ease forwards;
+  background-color: rgba(0, 0, 0, 0.664);
+  text-align: center; z-index: 2; padding: 2rem;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
 .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.8rem; opacity: 0.85; }
 .hero-title { font-family: 'Cinzel', serif; font-size: clamp(3.5rem, 9vw, 7.5rem); font-weight: 400; letter-spacing: 0.15em; color: var(--cream); line-height: 1; }
