@@ -96,42 +96,69 @@
   </div>
 </template>
 
-<script setup>
-import { computed, watch, nextTick } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { subsidiaries } from '@/data/index.js'
-import { useReveal } from '@/composables/useReveal.js'
-
-defineEmits(['open-modal'])
-
-const route  = useRoute()
-const router = useRouter()
-
-const sub    = computed(() => subsidiaries.find(s => s.id === route.params.id || s.id === route.name))
-const others = computed(() => subsidiaries.filter(s => s.id !== (sub.value?.id)))
-
-const { reinit } = useReveal('.sub-detail .reveal', 200)
-
-watch(() => route.params.id, () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-  nextTick(() => {
-    document.querySelectorAll('.sub-detail .reveal').forEach(el => el.classList.remove('visible'))
-    setTimeout(reinit, 120)
+  <script setup>
+  import { computed, watch, nextTick } from 'vue'
+  import { useRoute, useRouter } from 'vue-router'
+  import { subsidiaries } from '@/data/index.js'
+  import { useReveal }    from '@/composables/useReveal.js'
+  import { useSeo }       from '@/composables/useSeo.js'
+  import { breadcrumbSchema, serviceSchema } from '@/composables/useSchemas.js'
+  import { subsidiarySeo, BASE_URL } from '@/data/seo.js'
+  
+  defineEmits(['open-modal'])
+  
+  const route  = useRoute()
+  const router = useRouter()
+  
+  const sub = computed(() => subsidiaries.find(s => s.id === route.params.id || s.id === route.name))
+  const others = computed(() => subsidiaries.filter(s => s.id !== sub.value?.id))
+  
+  // Dynamic SEO — reacts to route changes automatically
+  const seoData = computed(() => {
+    const id = route.params.id || route.name
+    const meta = subsidiarySeo[id]
+    if (!meta) return {}
+    return {
+      ...meta,
+      jsonLd: [
+        breadcrumbSchema([
+          { name: 'Home',                         url: BASE_URL + '/' },
+          { name: 'HOCH ' + (sub.value?.sub || ''), url: meta.canonical }
+        ]),
+        serviceSchema(
+          'HOCH ' + (sub.value?.sub || ''),
+          meta.description,
+          meta.canonical,
+          meta.schema?.type || 'Service'
+        )
+      ]
+    }
   })
-})
-
-function goBack() {
-  router.push('/')
-  nextTick(() => setTimeout(() => {
-    document.getElementById('subsidiaries')?.scrollIntoView({ behavior: 'smooth' })
-  }, 150))
-}
-
-function visitOther(id) {
-  router.push('/' + id)
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-</script>
+  
+  useSeo(seoData)
+  
+  const { reinit } = useReveal('.sub-detail .reveal', 200)
+  
+  watch(() => route.params.id, () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    nextTick(() => {
+      document.querySelectorAll('.sub-detail .reveal').forEach(el => el.classList.remove('visible'))
+      setTimeout(reinit, 120)
+    })
+  })
+  
+  function goBack() {
+    router.push('/')
+    nextTick(() => setTimeout(() => {
+      document.getElementById('subsidiaries')?.scrollIntoView({ behavior: 'smooth' })
+    }, 150))
+  }
+  
+  function visitOther(id) {
+    router.push('/' + id)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+  </script>
 
 <style scoped>
 .sub-detail { padding-top: 5rem; }
