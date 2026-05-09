@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block common non-content paths
+Disallow: /assets/
+
+# Sitemap
+Sitemap: https://www.thehochgroup.com/sitemap.xml
