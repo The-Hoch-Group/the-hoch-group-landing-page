@@ -15,24 +15,14 @@
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">Full Name *</label>
-                <input
-                  class="form-input"
-                  :class="{ error: errors.name }"
-                  v-model="form.name"
-                  placeholder="Your full name"
-                  type="text"
-                />
+                <input class="form-input" :class="{ error: errors.name }" v-model="form.name"
+                  placeholder="Your full name" type="text" />
                 <span v-if="errors.name" class="form-error">{{ errors.name }}</span>
               </div>
               <div class="form-group">
                 <label class="form-label">Email Address *</label>
-                <input
-                  class="form-input"
-                  :class="{ error: errors.email }"
-                  v-model="form.email"
-                  placeholder="you@example.com"
-                  type="email"
-                />
+                <input class="form-input" :class="{ error: errors.email }" v-model="form.email"
+                  placeholder="you@example.com" type="email" />
                 <span v-if="errors.email" class="form-error">{{ errors.email }}</span>
               </div>
             </div>
@@ -40,21 +30,11 @@
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">Phone Number</label>
-                <input
-                  class="form-input"
-                  v-model="form.phone"
-                  placeholder="+233 ..."
-                  type="tel"
-                />
+                <input class="form-input" v-model="form.phone" placeholder="+233 ..." type="tel" />
               </div>
               <div class="form-group">
                 <label class="form-label">Company / Organisation</label>
-                <input
-                  class="form-input"
-                  v-model="form.company"
-                  placeholder="Optional"
-                  type="text"
-                />
+                <input class="form-input" v-model="form.company" placeholder="Optional" type="text" />
               </div>
             </div>
 
@@ -73,12 +53,8 @@
 
             <div class="form-group">
               <label class="form-label">Your Message *</label>
-              <textarea
-                class="form-textarea"
-                :class="{ error: errors.message }"
-                v-model="form.message"
-                placeholder="Tell us about your project, requirements, or how we can help..."
-              />
+              <textarea class="form-textarea" :class="{ error: errors.message }" v-model="form.message"
+                placeholder="Tell us about your project, requirements, or how we can help..." />
               <span v-if="errors.message" class="form-error">{{ errors.message }}</span>
             </div>
 
@@ -87,11 +63,7 @@
               {{ serverError }}
             </div>
 
-            <button
-              class="btn-primary modal-submit"
-              @click="submit"
-              :disabled="submitting"
-            >
+            <button class="btn-primary modal-submit" @click="submit" :disabled="submitting">
               <span v-if="submitting" class="submit-inner">
                 <span class="spinner" /> Sending…
               </span>
@@ -127,19 +99,19 @@ const emit = defineEmits(['update:modelValue'])
 const form = reactive({
   name: '', email: '', phone: '', company: '', type: 'General', message: ''
 })
-const errors      = reactive({})
-const submitted   = ref(false)
-const submitting  = ref(false)
+const errors = reactive({})
+const submitted = ref(false)
+const submitting = ref(false)
 const serverError = ref('')
 
 const firstName = computed(() => form.name.split(' ')[0])
 
-watch(() => props.prefill,    (v) => { if (v) form.type = v })
+watch(() => props.prefill, (v) => { if (v) form.type = v })
 watch(() => props.modelValue, (v) => { if (!v) reset() })
 
 function reset() {
   setTimeout(() => {
-    submitted.value   = false
+    submitted.value = false
     serverError.value = ''
     Object.keys(form).forEach(k => (form[k] = k === 'type' ? 'General' : ''))
     Object.keys(errors).forEach(k => delete errors[k])
@@ -152,10 +124,10 @@ function close() {
 
 function validate() {
   Object.keys(errors).forEach(k => delete errors[k])
-  if (!form.name.trim())    errors.name    = 'Name is required'
-  if (!form.email.trim())   errors.email   = 'Email is required'
+  if (!form.name.trim()) errors.name = 'Name is required'
+  if (!form.email.trim()) errors.email = 'Email is required'
   else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
-                            errors.email   = 'Enter a valid email'
+    errors.email = 'Enter a valid email'
   if (!form.message.trim()) errors.message = 'Please tell us about your enquiry'
   return !Object.keys(errors).length
 }
@@ -163,14 +135,14 @@ function validate() {
 async function submit() {
   if (!validate()) return
 
-  submitting.value  = true
+  submitting.value = true
   serverError.value = ''
 
   try {
     const res = await fetch('/api/enquire', {
-      method:  'POST',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ ...form }),
+      body: JSON.stringify({ ...form }),
     })
 
     const data = await res.json()
@@ -193,59 +165,141 @@ async function submit() {
 
 <style scoped>
 .modal-overlay {
-  position: fixed; inset: 0; z-index: 500;
-  background: rgba(6,6,5,0.92);
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(6, 6, 5, 0.92);
   backdrop-filter: blur(16px);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 2rem;
 }
+
 .modal-box {
   background: var(--dark-card);
-  border: 0.5px solid rgba(201,168,76,0.2);
-  max-width: 600px; width: 100%;
-  max-height: 90vh; overflow-y: auto;
-  padding: 3rem; position: relative;
+  border: 0.5px solid rgba(201, 168, 76, 0.2);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 3rem;
+  position: relative;
   animation: slideUp 0.3s ease;
 }
+
 .modal-close {
-  position: absolute; top: 1.5rem; right: 1.5rem;
-  background: none; border: none;
-  color: var(--gold-dim); font-size: 1.4rem;
-  cursor: pointer; transition: color 0.3s; line-height: 1;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--gold-dim);
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: color 0.3s;
+  line-height: 1;
 }
-.modal-close:hover { color: var(--gold); }
 
-.modal-eyebrow  { font-size: 0.58rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
-.modal-title    { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--cream); margin-bottom: 0.5rem; }
-.modal-subtitle { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; color: rgba(232,224,204,0.45); margin-bottom: 2.5rem; }
-.modal-divider  { height: 0.5px; background: rgba(201,168,76,0.15); margin-bottom: 2.5rem; }
+.modal-close:hover {
+  color: var(--gold);
+}
 
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.form-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
-.form-label { font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-dim); }
+.modal-eyebrow {
+  font-size: 0.58rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+
+.modal-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: rgba(232, 224, 204, 0.45);
+  margin-bottom: 2.5rem;
+}
+
+.modal-divider {
+  height: 0.5px;
+  background: rgba(201, 168, 76, 0.15);
+  margin-bottom: 2.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
 
 .form-input,
 .form-select,
 .form-textarea {
-  background: rgba(201,168,76,0.04);
-  border: 0.5px solid rgba(201,168,76,0.2);
+  background: rgba(201, 168, 76, 0.04);
+  border: 0.5px solid rgba(201, 168, 76, 0.2);
   color: var(--cream);
   font-family: 'Jost', sans-serif;
-  font-size: 0.82rem; font-weight: 300;
-  padding: 0.8rem 1rem; outline: none;
-  transition: border-color 0.3s; width: 100%;
+  font-size: 0.82rem;
+  font-weight: 300;
+  padding: 0.8rem 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+  width: 100%;
 }
+
 .form-input:focus,
 .form-select:focus,
-.form-textarea:focus { border-color: var(--gold); }
+.form-textarea:focus {
+  border-color: var(--gold);
+}
+
 .form-input::placeholder,
-.form-textarea::placeholder { color: rgba(232,224,204,0.2); }
-.form-select option { background: var(--dark); }
-.form-textarea { resize: vertical; min-height: 120px; }
+.form-textarea::placeholder {
+  color: rgba(232, 224, 204, 0.2);
+}
+
+.form-select option {
+  background: var(--dark);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
 
 .form-input.error,
-.form-textarea.error { border-color: #c94c4c; }
-.form-error { font-size: 0.58rem; color: #c97a7a; letter-spacing: 0.1em; }
+.form-textarea.error {
+  border-color: #c94c4c;
+}
+
+.form-error {
+  font-size: 0.58rem;
+  color: #c97a7a;
+  letter-spacing: 0.1em;
+}
 
 /* Server error banner */
 .server-error {
@@ -259,14 +313,23 @@ async function submit() {
   margin-bottom: 1rem;
 }
 
-.modal-submit { width: 100%; margin-top: 1.5rem; }
+.modal-submit {
+  width: 100%;
+  margin-top: 1.5rem;
+}
 
 /* Spinner inside button */
-.submit-inner { display: inline-flex; align-items: center; gap: 0.6rem; }
+.submit-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 .spinner {
   display: inline-block;
-  width: 12px; height: 12px;
-  border: 1.5px solid rgba(6,6,5,0.35);
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid rgba(6, 6, 5, 0.35);
   border-top-color: var(--black);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -274,16 +337,58 @@ async function submit() {
 }
 
 /* Success state */
-.success-state { text-align: center; padding: 3rem 0; }
-.success-icon  { font-size: 2.5rem; color: var(--gold); margin-bottom: 1.5rem; }
-.success-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--cream); margin-bottom: 0.8rem; }
-.success-msg   { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; color: rgba(232,224,204,0.5); line-height: 1.8; }
+.success-state {
+  text-align: center;
+  padding: 3rem 0;
+}
 
-@keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-@keyframes spin    { to { transform: rotate(360deg); } }
+.success-icon {
+  font-size: 2.5rem;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+
+.success-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 0.8rem;
+}
+
+.success-msg {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: rgba(232, 224, 204, 0.5);
+  line-height: 1.8;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 @media (max-width: 600px) {
-  .modal-box { padding: 2rem 1.5rem; }
-  .form-row  { grid-template-columns: 1fr; }
+  .modal-box {
+    padding: 2rem 1.5rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
